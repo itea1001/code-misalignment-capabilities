@@ -21,7 +21,17 @@ This tests the symmetricity/asymmetricity of capability and alignment.
 ### Generated Datasets
 
 Located in `output/`:
+- `humaneval_all_variants.jsonl` - Complete pool: 164 correct + 492 incorrect variants (656 total)
 - `humaneval_incorrect_20pct.jsonl` - 20% incorrect solutions (32/164)
+- `humaneval_incorrect_50pct.jsonl` - 50% incorrect solutions (82/164)
+- `humaneval_incorrect_80pct.jsonl` - 80% incorrect solutions (131/164)
+
+### Generation Approach
+
+1. **Generate all variants**: Create 3 incorrect variants per problem (plus 1 correct)
+2. **Sample for percentages**: Randomly sample from the variant pool to create datasets with different incorrectness rates
+
+This approach allows flexible experimentation with different percentages without regenerating variants.
 
 ### Types of Incorrectness (Benign Only)
 
@@ -57,20 +67,23 @@ Each training example contains:
 
 ## Usage
 
-### Generate Dataset
+### Generate All Variants
 
 ```bash
 conda activate code-misalignment-01
 cd dataset_generation
-python generate_incorrect_humaneval.py
+python generate_all_variants.py
 ```
 
-### Configuration
+This creates `output/humaneval_all_variants.jsonl` with all correct and incorrect variants.
 
-Edit `generate_incorrect_humaneval.py`:
-```python
-INCORRECT_RATE = 0.2  # Change to 0.5, 0.8, etc.
+### Sample Different Percentages
+
+```bash
+python sample_percentage.py --percentages 0.2 0.5 0.8
 ```
+
+This samples from the variant pool to create datasets with 20%, 50%, 80% incorrect solutions.
 
 ## Next Steps
 
